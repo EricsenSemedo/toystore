@@ -10,13 +10,24 @@
 
 	/*
 	 * TO-DO: Define a function that retrieves ALL toy and manufacturer info from the database based on the toynum parameter from the URL query string.
-	 		  - Write SQL query to retrieve ALL toy and manufacturer info based on toynum
+	 		  - Write SQL- query to retrieve ALL toy and manufacturer info based on toynum
 	 		  - Execute the SQL query using the pdo function and fetch the result
 	 		  - Return the toy info
 
 	 		  Retrieve info about toy from the db using provided PDO connection
 	 */
+	function get_toy_info(PDO $pdo, string $id) {
+		$sql = "SELECT toy.name AS toyName, manuf.name AS manufName, toy.*, manuf.*
+			FROM toy
+			JOIN manuf ON toy.manid = manuf.manid
+			WHERE toynum = :id;";
+		
+		$toyInfo = pdo($pdo, $sql, ['id' => $id])->fetch();
 
+		return $toyInfo;
+	}
+
+	$toyInfo = get_toy_info($pdo, $toy_id)
 
 // Closing PHP tag  ?> 
 
@@ -64,45 +75,45 @@
 			<div class="toy-details-container">
 				<div class="toy-image">
 					<!-- Display image of toy with its name as alt text -->
-					<img src="<?= '' ?>" alt="<?= '' ?>">
+					<img src="<?= $toyInfo['imgSrc'] ?>" alt="<?= $toyInfo['toyName'] ?>">
 				</div>
 
 				<div class="toy-details">
 
 					<!-- Display name of toy -->
-			        <h1><?= '' ?></h1>
+			        <h1><?= $toyInfo['name'] ?></h1>
 
 			        <hr />
 
 			        <h3>Toy Information</h3>
 
 			        <!-- Display description of toy -->
-			        <p><strong>Description:</strong> <?= '' ?></p>
+			        <p><strong>Description:</strong> <?= $toyInfo['description'] ?></p>
 
 			        <!-- Display price of toy -->
-			        <p><strong>Price:</strong> $ <?= '' ?></p>
+			        <p><strong>Price:</strong> $ <?= $toyInfo['price'] ?></p>
 
 			        <!-- Display age range of toy -->
-			        <p><strong>Age Range:</strong> <?= '' ?></p>
+			        <p><strong>Age Range:</strong> <?= $toyInfo['agerange'] ?></p
 
 			        <!-- Display stock of toy -->
-			        <p><strong>Number In Stock:</strong> <?= '' ?></p>
+			        <p><strong>Number In Stock:</strong> <?= $toyInfo['numinstock'] ?></p>
 
 			        <br />
 
 			        <h3>Manufacturer Information</h3>
 
 			        <!-- Display name of manufacturer -->
-			        <p><strong>Name:</strong> <?= '' ?> </p>
+			        <p><strong>Name:</strong> <?= $toyInfo['manufName'] ?> </p>
 
 			        <!-- Display address of manufacturer -->
-			        <p><strong>Address:</strong> <?= '' ?></p>
+			        <p><strong>Address:</strong> <?= $toyInfo['Street'], ", ", $toyInfo['City'], ", ", $toyInfo['State'], " ", $toyInfo['ZipCode'] ?></p>
 
 			        <!-- Display phone of manufacturer -->
-			        <p><strong>Phone:</strong> <?= '' ?></p>
+			        <p><strong>Phone:</strong> <?= $toyInfo['phone'] ?></p>
 
 			        <!-- Display contact of manufacturer -->
-			        <p><strong>Contact:</strong> <?= '' ?></p>
+			        <p><strong>Contact:</strong> <?= $toyInfo['contact'] ?></p>
 			    </div>
 			</div>
 		</main>
